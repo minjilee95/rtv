@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 import re
 import time
+import urllib
 
 from . import docs
 from .content import SubmissionContent, SubredditContent
@@ -141,6 +142,7 @@ class SubmissionPage(Page):
         """
 
         data = self.get_selected_item()
+
         if data['type'] == 'Submission':
             self.term.open_link(data['url_full'])
             self.config.history.add(data['url_full'])
@@ -149,6 +151,33 @@ class SubmissionPage(Page):
         else:
             self.term.flash()
 
+    @SubmissionController.register(Command('SUBMISSION_OPEN_DISCUSSION_IN_BROWSER'))
+    def open_link(self):
+        """
+        Open the discussion with the web browser
+        """
+
+        data = self.get_selected_item()
+
+        discussion_url = data.get('permalink')
+        if discussion_url:
+            self.term.open_browser(discussion_url)
+    """
+    @SubmissionController.register(Command('SUBMISSION_DOWNLOAD_IMAGE'))
+    def download_image(self):
+        
+        # If submission is an image, press d to download it
+        
+        data = self.get_selected_item()
+
+        if data['type'] == 'Submission' and ends in jpg png or gif:
+            image_url = data['url-full']
+            image_link = list(image_url)
+            total_elements = len(image_link)
+            file_number = total_elements - 10
+            file_name = (''.join(image_link[file_number:]))
+            urllib.urlretrieve(image_url, file_name)
+    """
     @SubmissionController.register(Command('SUBMISSION_OPEN_IN_PAGER'))
     def open_pager(self):
         """
