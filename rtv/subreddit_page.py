@@ -190,6 +190,8 @@ class SubredditPage(Page):
         Open a link with the webbrowser
         """
 
+
+
         data = self.get_selected_item()
         if data['url_type'] == 'selfpost':
             self.open_submission()
@@ -201,6 +203,16 @@ class SubredditPage(Page):
         else:
             self.term.open_link(data['url_full'])
             self.config.history.add(data['url_full'])
+
+    @SubredditController.register(Command('SUBREDDIT_OPEN_DISCUSSION_IN_BROWSER'))
+    def open_link(self):
+        """
+        Open the discussion with the web browser
+        """
+
+        data = self.get_selected_item()
+        if data:
+            self.term.open_link(url=data['permalink'])
 
     @SubredditController.register(Command('SUBREDDIT_POST'))
     @logged_in
